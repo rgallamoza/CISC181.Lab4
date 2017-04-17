@@ -26,6 +26,7 @@ import pkgPokerEnum.eAction;
 import pkgPokerEnum.eGame;
 import pkgPokerBLL.Action;
 import pkgPokerBLL.GamePlay;
+import pkgPokerBLL.Player;
 import pkgPokerBLL.Table;
 
 public class PokerTableController implements Initializable {
@@ -104,11 +105,30 @@ public class PokerTableController implements Initializable {
 	//TODO: Lab #4 - Complete (fix) setiPlayerPosition
 	public void btnSitLeave_Click(ActionEvent event) {
 
+		Action act;
+		
 		// Set the PlayerPosition in the Player
-		mainApp.getPlayer().setiPlayerPosition(1);
-
-		// Build an Action message
-		Action act = new Action(eAction.Sit, mainApp.getPlayer());
+		ToggleButton btn = (ToggleButton)event.getSource();
+		if(btn.equals(btnPos1SitLeave)){
+			if(mainApp.getPlayer().getiPlayerPosition()==1){
+				mainApp.getPlayer().setiPlayerPosition(0);
+				act = new Action(eAction.Leave, mainApp.getPlayer());
+			}
+			else{
+				mainApp.getPlayer().setiPlayerPosition(1);
+				act = new Action(eAction.Sit, mainApp.getPlayer());
+			}
+		}
+		else{ //if(btn.equals(btnPos2SitLeave)){
+			if(mainApp.getPlayer().getiPlayerPosition()==2){
+				mainApp.getPlayer().setiPlayerPosition(0);
+				act = new Action(eAction.Leave, mainApp.getPlayer());
+			}
+			else{
+				mainApp.getPlayer().setiPlayerPosition(2);
+				act = new Action(eAction.Sit, mainApp.getPlayer());
+			}
+		}
 
 		// Send the Action to the Hub
 		mainApp.messageSend(act);
@@ -157,7 +177,116 @@ public class PokerTableController implements Initializable {
 
 	//TODO: Lab #4 Complete the implementation
 	public void Handle_TableState(Table HubPokerTable) {
-
+		int NbrSeated = 0;
+		for(Player p : HubPokerTable.getTablePlayers().values()){
+			if(p.getiPlayerPosition()>0){
+				NbrSeated++;
+			}
+		}
+		// If player sitting in position 1
+		if(mainApp.getPlayer().getiPlayerPosition()==1){
+			lblPlayerPos1.setText(mainApp.getPlayer().getPlayerName());
+			btnPos1SitLeave.setText("Leave");
+			btnPos1SitLeave.setSelected(true);
+			btnPos1SitLeave.setVisible(true);
+			
+			// If two players are seated, the other label must have a name
+			if(NbrSeated==2){
+				for(Player p : HubPokerTable.getTablePlayers().values()){
+					if(p.getiPlayerPosition()==2){
+						lblPlayerPos2.setText(p.getPlayerName());
+					}
+				}
+				
+				btnPos2SitLeave.setText("Leave");
+				btnPos2SitLeave.setSelected(true);
+				btnPos2SitLeave.setVisible(false);
+			}
+			// Otherwise other label set to default, but button invisible
+			else{
+				lblPlayerPos2.setText("Player 2");
+				btnPos2SitLeave.setText("Sit");
+				btnPos2SitLeave.setSelected(false);
+				btnPos2SitLeave.setVisible(false);
+			}
+		}
+		
+		// Else if player sitting in position 2
+		else if(mainApp.getPlayer().getiPlayerPosition()==2){
+			lblPlayerPos2.setText(mainApp.getPlayer().getPlayerName());
+			btnPos2SitLeave.setText("Leave");
+			btnPos2SitLeave.setSelected(true);
+			btnPos2SitLeave.setVisible(true);
+			
+			// If two players are seated, the other label must have a name
+			if(NbrSeated==2){
+				for(Player p : HubPokerTable.getTablePlayers().values()){
+					if(p.getiPlayerPosition()==1){
+						lblPlayerPos1.setText(p.getPlayerName());
+					}
+				}
+				
+				btnPos1SitLeave.setText("Leave");
+				btnPos1SitLeave.setSelected(true);
+				btnPos1SitLeave.setVisible(false);
+			}
+			// Otherwise other label set to default
+			else{
+				lblPlayerPos1.setText("Player 1");
+				btnPos1SitLeave.setText("Sit");
+				btnPos1SitLeave.setSelected(false);
+				btnPos1SitLeave.setVisible(false);
+			}
+		}
+		
+		// Else neither player sat yet, or one of players sit in/left a position
+		else{
+			// If no players sitting, set both labels to default
+			if(NbrSeated==0){
+				lblPlayerPos1.setText("Player 1");
+				btnPos1SitLeave.setText("Sit");
+				btnPos1SitLeave.setSelected(false);
+				btnPos1SitLeave.setVisible(true);
+				
+				lblPlayerPos2.setText("Player 2");
+				btnPos2SitLeave.setText("Sit");
+				btnPos2SitLeave.setSelected(false);
+				btnPos2SitLeave.setVisible(true);
+			}
+			// Otherwise at least one other player is sitting
+			else{
+				for(Player p : HubPokerTable.getTablePlayers().values()){
+					if(p.getiPlayerPosition()==1){
+						lblPlayerPos1.setText(p.getPlayerName());
+						btnPos1SitLeave.setText("Leave");
+						btnPos1SitLeave.setSelected(true);
+						btnPos1SitLeave.setVisible(false);
+						
+						lblPlayerPos2.setText("Player 2");
+						btnPos2SitLeave.setText("Sit");
+						btnPos2SitLeave.setSelected(false);
+						btnPos2SitLeave.setVisible(true);
+					}
+					else if(p.getiPlayerPosition()==2){
+						lblPlayerPos2.setText(p.getPlayerName());
+						btnPos2SitLeave.setText("Leave");
+						btnPos2SitLeave.setSelected(true);
+						btnPos2SitLeave.setVisible(false);
+						
+						lblPlayerPos1.setText("Player 1");
+						btnPos1SitLeave.setText("Sit");
+						btnPos1SitLeave.setSelected(false);
+						btnPos1SitLeave.setVisible(true);
+					}
+				}
+			}
+			
+			
+			
+			
+			
+			
+		}
 	}
 
 	public void Handle_GameState(GamePlay HubPokerGame) {
@@ -178,6 +307,9 @@ public class PokerTableController implements Initializable {
 
 	@FXML
 	void btnStart_Click(ActionEvent event) {
+		
+		
+		
 		// Start the Game
 		Action act = new Action(eAction.StartGame, mainApp.getPlayer());
 

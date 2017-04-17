@@ -17,6 +17,10 @@ public class Table implements Serializable {
 		TableID = UUID.randomUUID();
 	}
 
+	public HashMap<UUID, Player> getTablePlayers() {
+		return TablePlayers;
+	}
+
 	public Table AddPlayerToTable(Player p) {
 
 		TablePlayers.put(p.getPlayerID(),p);
@@ -25,7 +29,7 @@ public class Table implements Serializable {
 
 	public Table RemovePlayerFromTable(Player p) {
 
-		TablePlayers.remove(p.getPlayerID(),p);
+		TablePlayers.remove(p.getPlayerID());
 		return this;
 	}
 }

@@ -201,6 +201,8 @@ public class PokerTableController implements Initializable {
 				btnPos2SitLeave.setText("Leave");
 				btnPos2SitLeave.setSelected(true);
 				btnPos2SitLeave.setVisible(false);
+				
+				btnStartGame.setVisible(true);
 			}
 			// Otherwise other label set to default, but button invisible
 			else{
@@ -208,6 +210,8 @@ public class PokerTableController implements Initializable {
 				btnPos2SitLeave.setText("Sit");
 				btnPos2SitLeave.setSelected(false);
 				btnPos2SitLeave.setVisible(false);
+				
+				btnStartGame.setVisible(false);
 			}
 		}
 		
@@ -229,6 +233,8 @@ public class PokerTableController implements Initializable {
 				btnPos1SitLeave.setText("Leave");
 				btnPos1SitLeave.setSelected(true);
 				btnPos1SitLeave.setVisible(false);
+				
+				btnStartGame.setVisible(true);
 			}
 			// Otherwise other label set to default
 			else{
@@ -236,6 +242,8 @@ public class PokerTableController implements Initializable {
 				btnPos1SitLeave.setText("Sit");
 				btnPos1SitLeave.setSelected(false);
 				btnPos1SitLeave.setVisible(false);
+				
+				btnStartGame.setVisible(false);
 			}
 		}
 		
@@ -252,6 +260,8 @@ public class PokerTableController implements Initializable {
 				btnPos2SitLeave.setText("Sit");
 				btnPos2SitLeave.setSelected(false);
 				btnPos2SitLeave.setVisible(true);
+				
+				btnStartGame.setVisible(false);
 			}
 			// Otherwise at least one other player is sitting
 			else{
@@ -266,6 +276,8 @@ public class PokerTableController implements Initializable {
 						btnPos2SitLeave.setText("Sit");
 						btnPos2SitLeave.setSelected(false);
 						btnPos2SitLeave.setVisible(true);
+						
+						btnStartGame.setVisible(false);
 					}
 					else if(p.getiPlayerPosition()==2){
 						lblPlayerPos2.setText(p.getPlayerName());
@@ -277,6 +289,8 @@ public class PokerTableController implements Initializable {
 						btnPos1SitLeave.setText("Sit");
 						btnPos1SitLeave.setSelected(false);
 						btnPos1SitLeave.setVisible(true);
+						
+						btnStartGame.setVisible(false);
 					}
 				}
 			}
@@ -307,9 +321,6 @@ public class PokerTableController implements Initializable {
 
 	@FXML
 	void btnStart_Click(ActionEvent event) {
-		
-		
-		
 		// Start the Game
 		Action act = new Action(eAction.StartGame, mainApp.getPlayer());
 

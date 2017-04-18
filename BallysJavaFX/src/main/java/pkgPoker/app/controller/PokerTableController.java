@@ -102,7 +102,7 @@ public class PokerTableController implements Initializable {
 	public void GetGameState() {
 	}
 
-	//TODO: Lab #4 - Complete (fix) setiPlayerPosition
+
 	public void btnSitLeave_Click(ActionEvent event) {
 
 		Action act;
@@ -175,14 +175,9 @@ public class PokerTableController implements Initializable {
 
 	}
 
-	//TODO: Lab #4 Complete the implementation
 	public void Handle_TableState(Table HubPokerTable) {
-		int NbrSeated = 0;
-		for(Player p : HubPokerTable.getTablePlayers().values()){
-			if(p.getiPlayerPosition()>0){
-				NbrSeated++;
-			}
-		}
+		int NbrSeated = HubPokerTable.getTablePlayers().size();
+		
 		// If player sitting in position 1
 		if(mainApp.getPlayer().getiPlayerPosition()==1){
 			lblPlayerPos1.setText(mainApp.getPlayer().getPlayerName());
